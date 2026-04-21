@@ -2,11 +2,11 @@ import torch
 import os
 import random
 from PIL import Image
-import torchvision.transforms as T
 import torch.nn.functional as F
 
 from model.constants import MODEL_PATH
 from model.siamese_network import SiameseNetwork
+from model.transforms import base_transform, positive_transform
 
 TEST_DATA_FOLDER = "../data/hsk_dataset_images"
 
@@ -17,19 +17,6 @@ model = SiameseNetwork().to(device)
 model.load_state_dict(torch.load(MODEL_PATH))
 model.eval()
 
-# Transforms
-base_transform = T.Compose([
-    T.Grayscale(), T.Resize((96, 96)), T.ToTensor(), T.Normalize((0.5,), (0.5,))
-])
-
-distort_transform = T.Compose([
-    T.Grayscale(),
-    T.RandomApply([T.ElasticTransform(alpha=50.0)], p=0.5),
-    T.RandomAffine(degrees=10, translate=(0.05, 0.05), scale=(0.9, 1.1)),
-    T.Resize((96, 96)),
-    T.ToTensor(),
-    T.Normalize((0.5,), (0.5,))
-])
 
 # Test Loop
 files = [f for f in os.listdir(TEST_DATA_FOLDER) if f.endswith('.png')]
@@ -47,7 +34,7 @@ for i in range(3000):
     img_positive = img_anchor.copy()
 
     tensor_anchor = base_transform(img_anchor).unsqueeze(0).to(device)
-    tensor_positive = distort_transform(img_positive).unsqueeze(0).to(device)
+    tensor_positive = positive_transform(img_positive).unsqueeze(0).to(device)
 
     # Pick a Negative
     neg_file = random.choice(files)

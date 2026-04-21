@@ -5,28 +5,23 @@ from torch.utils.data import Dataset, DataLoader
 import torchvision.transforms as T
 
 from model.constants import DATASET_FILE
+from model.transforms import positive_transform, base_transform
 
 
 class TripletDataset(Dataset):
-    def __init__(self, image_folder):
+    def __init__(self, image_folder, file_list=None):
         self.image_folder = image_folder
-        self.image_files = [f for f in os.listdir(image_folder) if f.endswith('.png')]
+
+        if file_list is not None:
+            self.image_files = file_list
+        else:
+            self.image_files = [f for f in os.listdir(image_folder) if f.endswith('.png')]
 
         # Base Transform For Anchor and Negative
-        self.base_transform = T.Compose([
-            T.Grayscale(),
-            T.ToTensor(),
-            T.Normalize((0.5,), (0.5,))
-        ])
+        self.base_transform = base_transform
 
         # Distortions For Positive
-        self.positive_transform = T.Compose([
-            T.Grayscale(),
-            T.RandomApply([T.ElasticTransform(alpha=50.0)], p=0.5),
-            T.RandomAffine(degrees=10, translate=(0.1, 0.1), scale=(0.9, 1.1)),
-            T.ToTensor(),
-            T.Normalize((0.5,), (0.5,))
-        ])
+        self.positive_transform = positive_transform
 
     def __len__(self):
         return len(self.image_files)

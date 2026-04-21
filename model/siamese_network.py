@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 class SiameseNetwork(nn.Module):
     def __init__(self):
@@ -9,17 +10,20 @@ class SiameseNetwork(nn.Module):
         # Input: 96x96x1 images
         self.conv_layers = nn.Sequential(
             # Layer 1: 96x96 -> 48x48
-            nn.Conv2d(1, 32, kernel_size=3, padding=1),
+            nn.Conv2d(1, 32, kernel_size=7, stride=1, padding=3),
+            nn.BatchNorm2d(32),
             nn.ReLU(),
             nn.MaxPool2d(2, 2),
 
             # Layer 2: 48x48 -> 24x24
             nn.Conv2d(32, 64, kernel_size=3, padding=1),
+            nn.BatchNorm2d(64),
             nn.ReLU(),
             nn.MaxPool2d(2, 2),
 
             # Layer 3: 24x24 -> 12x12
             nn.Conv2d(64, 128, kernel_size=3, padding=1),
+            nn.BatchNorm2d(128),
             nn.ReLU(),
             nn.MaxPool2d(2, 2),
         )
@@ -37,6 +41,7 @@ class SiameseNetwork(nn.Module):
         x = self.conv_layers(x)
         x = torch.flatten(x, 1)
         x = self.fc_layers(x)
+        x = F.normalize(x, p=2, dim=1)
         return x
 
     def forward(self, anchor, positive, negative):

@@ -5,25 +5,20 @@ import numpy as np
 from PIL import Image
 import torchvision.transforms as T
 from scipy.spatial.distance import cdist
+import torch.nn.functional as F
 
 from model.constants import MODEL_PATH, DATASET_FILE
 from model.siamese_network import SiameseNetwork
+from model.transforms import base_transform
 
 IMAGE_FOLDER = "../data/" + DATASET_FILE
-OUTPUT_JSON = "big_confusion_map.json"
+OUTPUT_JSON = "confusion_map2.json"
 MODEL_FOLDER = "../model"
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = SiameseNetwork().to(device)
 model.load_state_dict(torch.load(MODEL_FOLDER + "/" + MODEL_PATH))
 model.eval()
-
-transform = T.Compose([
-    T.Grayscale(),
-    T.Resize((96, 96)),
-    T.ToTensor(),
-    T.Normalize((0.5,), (0.5,))
-])
 
 files = sorted([f for f in os.listdir(IMAGE_FOLDER) if f.endswith('.png')])
 vectors = []
@@ -34,7 +29,7 @@ with torch.no_grad():
         # Load and transform
         path = os.path.join(IMAGE_FOLDER, filename)
         img = Image.open(path)
-        t = transform(img).unsqueeze(0).to(device)
+        t = base_transform(img).unsqueeze(0).to(device)
 
         # Get feature vector (convert from gpu)
         v = model.forward_once(t).cpu().numpy()[0]
@@ -62,9 +57,10 @@ for i, target in enumerate(char_labels):
     distances = distance_matrix[i]
 
     top_indices = np.argsort(distances)[1:6]
-    best_3 = [char_labels[idx] for idx in top_indices]
 
-    confusion_map[target] = best_3
+    best_5 = [(char_labels[idx], round((1.0 - distances[idx] / 2.0) * 100,2)) for idx in top_indices]
+
+    confusion_map[target] = best_5
 
     if i % 10 == 0:
         print(f"Processed {i}/{len(char_labels)} characters...")

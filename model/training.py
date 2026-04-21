@@ -15,7 +15,7 @@ def train_model(model, device, dataloader, max_epochs=100, patience=5):
     criterion = nn.TripletMarginLoss(margin=1.0, p=2)
 
     # Optimizer
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
 
     best_loss = float('inf')
     best_model_wts = copy.deepcopy(model.state_dict())
@@ -93,7 +93,7 @@ def train():
 
     model.train()
 
-    train_model(model, device, train_dataloader, max_epochs=30, patience=7)
+    train_model(model, device, train_dataloader, max_epochs=30, patience=5)
 
 if __name__ == "__main__":
     train()
