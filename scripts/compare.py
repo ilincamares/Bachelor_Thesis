@@ -18,7 +18,7 @@ img2 = cv2.imread(img2_path, cv2.IMREAD_GRAYSCALE)
 # Calculate SSIM (Returns a score from -1 to 1, where 1 is a perfect match)
 ssim_score, diff = ssim(img1, img2, full=True)
 
-with open('confusion_map.json', 'r', encoding='utf-8') as file:
+with open('confusion_maps/confusion_map.json', 'r', encoding='utf-8') as file:
     data = json.load(file)
 
 ai_score = calculate_distance(img1_path, img2_path, model_path)

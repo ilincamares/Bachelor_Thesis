@@ -12,7 +12,7 @@ from model.siamese_network import SiameseNetwork
 from model.transforms import base_transform
 
 IMAGE_FOLDER = "../data/" + DATASET_FILE
-OUTPUT_JSON = "confusion_map2.json"
+OUTPUT_JSON = "confusion_map.json"
 MODEL_FOLDER = "../model"
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
