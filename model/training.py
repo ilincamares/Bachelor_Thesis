@@ -1,100 +1,105 @@
-import copy
 import os
 
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import copy
+from sklearn.model_selection import train_test_split
+
 from torch.utils.data import DataLoader
 
 from model.constants import MODEL_PATH, DATASET_FILE
-from model.triplet_dataset import TripletDataset
 from model.siamese_network import SiameseNetwork
+from model.triplet_dataset import TripletDataset
 
-def train_model(model, device, dataloader, max_epochs=100, patience=5):
-    # Loss Function with Euclidean Distance
-    criterion = nn.TripletMarginLoss(margin=1.0, p=2)
 
-    # Optimizer
+def train_model_pro(model, train_loader, val_loader, max_epochs=50, patience=5):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.to(device)
+
+    criterion = nn.TripletMarginLoss(margin=0.5)
     optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
 
     best_loss = float('inf')
     best_model_wts = copy.deepcopy(model.state_dict())
     patience_counter = 0
 
-    print("Training...")
+    print(f"Training (Max Epochs: {max_epochs}, Patience: {patience})")
 
-    # Training Loop
-    # Epochs
     for epoch in range(max_epochs):
-        running_loss = 0.0
+        # 1. TRAINING PHASE
+        model.train()
+        running_train_loss = 0.0
 
-        # Batch Loop
-        for batch_idx, (anchors, positives, negatives) in enumerate(dataloader):
-            # Move to GPU
-            anchors = anchors.to(device)
-            positives = positives.to(device)
-            negatives = negatives.to(device)
+        for anchors, positives, negatives in train_loader:
+            anchors, positives, negatives = anchors.to(device), positives.to(device), negatives.to(device)
 
-            # Zero Gradients
             optimizer.zero_grad()
-
-            # Forward Pass
-            anchor_vec, positive_vec, negative_vec = model(anchors, positives, negatives)
-
-            # Calculate Loss
-            loss = criterion(anchor_vec, positive_vec, negative_vec)
-
-            # Backprop
+            vec_a, vec_p, vec_n = model(anchors, positives, negatives)
+            loss = criterion(vec_a, vec_p, vec_n)
             loss.backward()
             optimizer.step()
 
-            running_loss += loss.item()
+            running_train_loss += loss.item()
 
-        avg_loss = running_loss / len(dataloader)
-        print(f"Epoch {epoch+1}/{max_epochs}, Loss: {avg_loss:.4f}")
+        avg_train_loss = running_train_loss / len(train_loader)
 
-        # --- THE SMART CHECK ---
-        if avg_loss < best_loss:
-            best_loss = avg_loss
+        # 2. VALIDATION PHASE
+        model.eval()
+        running_val_loss = 0.0
+
+        with torch.no_grad():
+            for anchors, positives, negatives in val_loader:
+                anchors, positives, negatives = anchors.to(device), positives.to(device), negatives.to(device)
+
+                vec_a, vec_p, vec_n = model(anchors, positives, negatives)
+                loss = criterion(vec_a, vec_p, vec_n)
+                running_val_loss += loss.item()
+
+        avg_val_loss = running_val_loss / len(val_loader)
+
+        print(f"Epoch [{epoch + 1}/{max_epochs}] | Train Loss: {avg_train_loss:.4f} | Val Loss: {avg_val_loss:.4f}",
+              end="")
+
+        # 3. EARLY STOPPING CHECK
+        if avg_val_loss < best_loss:
+            best_loss = avg_val_loss
             best_model_wts = copy.deepcopy(model.state_dict())
             patience_counter = 0
             print("New Best!")
-            # Save immediately just in case
-            torch.save(model.state_dict(), MODEL_PATH)
+            torch.save(model.state_dict(), "siamese_hanzi_best.pth")
         else:
             patience_counter += 1
-            print(f" No improvement ({patience_counter}/{patience})")
+            print(f"No improvement ({patience_counter}/{patience})")
 
-        # --- EARLY STOPPING TRIGGER ---
         if patience_counter >= patience:
-            print(f"\n Stopping Early! Loss hasn't improved for {patience} epochs.")
-            print(f"Best Loss was: {best_loss:.4f}")
+            print(f"\nStopping Early! Validation loss hasn't improved for {patience} epochs.")
+            print(f"The model has officially learned as much as it can without memorizing.")
             break
 
-    print("Training Complete!")
+    model.load_state_dict(best_model_wts)
+    print(f"\nTraining Complete. Best Validation Loss: {best_loss:.4f}")
+    return model
 
-    torch.save(best_model_wts, MODEL_PATH)
-    print("Model saved!")
-
-
-
-def train():
-    train_dataset = TripletDataset(image_folder="../data/" + DATASET_FILE)
-    train_dataloader = DataLoader(train_dataset, batch_size=32, shuffle=True)
-
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = SiameseNetwork().to(device)
-
-    if os.path.exists(MODEL_PATH):
-        model.load_state_dict(torch.load(MODEL_PATH))
-        print("Model loaded!")
-    else:
-        print("Model created!")
-
-    model.train()
-
-    train_model(model, device, train_dataloader, max_epochs=30, patience=5)
 
 if __name__ == "__main__":
-    train()
+    IMAGE_FOLDER = "../data/" + DATASET_FILE
 
+    all_files = [f for f in os.listdir(IMAGE_FOLDER) if f.endswith('.png')]
+
+    train_files, val_files = train_test_split(all_files, test_size=0.2, random_state=42)
+
+    print(f"Training on {len(train_files)} unique characters...")
+    print(f"Validating on {len(val_files)} unique unseen characters...")
+
+    train_dataset = TripletDataset(image_folder=IMAGE_FOLDER, file_list=train_files)
+    val_dataset = TripletDataset(image_folder=IMAGE_FOLDER, file_list=val_files)
+
+    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+    val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
+
+    model = SiameseNetwork()
+    trained_model = train_model_pro(model, train_loader, val_loader)
+
+    torch.save(trained_model.state_dict(), MODEL_PATH)
+    print("Model saved!")
