@@ -108,7 +108,7 @@ def load_metadata(path: str):
         if hsk_column is not None:
             value = row.get(hsk_column)
             if not pd.isna(value):
-                hsk_level = str(value).strip()
+                hsk_level = str(int(value)).strip()
 
         metadata[character] = {
             "pinyin": pinyin,
