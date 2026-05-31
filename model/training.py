@@ -13,7 +13,7 @@ from model.siamese_network import SiameseNetwork
 from model.triplet_dataset import TripletDataset
 
 
-def train_model_pro(model, train_loader, val_loader, max_epochs=50, patience=5):
+def train_model(model, train_loader, val_loader, max_epochs=50, patience=5):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
 
@@ -99,7 +99,7 @@ if __name__ == "__main__":
     val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
 
     model = SiameseNetwork()
-    trained_model = train_model_pro(model, train_loader, val_loader)
+    trained_model = train_model(model, train_loader, val_loader)
 
     torch.save(trained_model.state_dict(), MODEL_PATH)
     print("Model saved!")
