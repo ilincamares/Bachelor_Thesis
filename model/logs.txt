@@ -1,4 +1,5 @@
-Training (Max Epochs: 50, Patience: 5)Epoch [1/50] | Train Loss: 0.2212 | Val Loss: 0.1266
+Training (Max Epochs: 50, Patience: 5)
+Epoch [1/50] | Train Loss: 0.2212 | Val Loss: 0.1266
 Epoch [2/50] | Train Loss: 0.0935 | Val Loss: 0.1371
 Epoch [3/50] | Train Loss: 0.0706 | Val Loss: 0.0876
 Epoch [4/50] | Train Loss: 0.0609 | Val Loss: 0.0671
@@ -21,7 +22,8 @@ Epoch [20/50] | Train Loss: 0.0357 | Val Loss: 0.0460
 Epoch [21/50] | Train Loss: 0.0366 | Val Loss: 0.0476
 Epoch [22/50] | Train Loss: 0.0376 | Val Loss: 0.0384
 Epoch [23/50] | Train Loss: 0.0381 | Val Loss: 0.0493
-Training (Max Epochs: 50, Patience: 5)Training (Max Epochs: 50, Patience: 5)Epoch [1/50] | Train Loss: 0.2943 | Val Loss: 0.1417
+Training (Max Epochs: 50, Patience: 5)Training (Max Epochs: 50, Patience: 5)
+Epoch [1/50] | Train Loss: 0.2943 | Val Loss: 0.1417
 Epoch [2/50] | Train Loss: 0.1065 | Val Loss: 0.0918
 Epoch [3/50] | Train Loss: 0.0839 | Val Loss: 0.1010
 Epoch [4/50] | Train Loss: 0.0715 | Val Loss: 0.0946
@@ -36,7 +38,8 @@ Epoch [12/50] | Train Loss: 0.0491 | Val Loss: 0.0621
 Epoch [13/50] | Train Loss: 0.0491 | Val Loss: 0.0513
 Epoch [14/50] | Train Loss: 0.0473 | Val Loss: 0.0507
 Epoch [15/50] | Train Loss: 0.0477 | Val Loss: 0.0584
-Training (Max Epochs: 50, Patience: 5)Epoch [1/50] | Train Loss: 0.0787 | Val Loss: 0.0299
+Training (Max Epochs: 50, Patience: 5)
+Epoch [1/50] | Train Loss: 0.0787 | Val Loss: 0.0299
 Epoch [2/50] | Train Loss: 0.0148 | Val Loss: 0.0151
 Epoch [3/50] | Train Loss: 0.0094 | Val Loss: 0.0144
 Epoch [4/50] | Train Loss: 0.0074 | Val Loss: 0.0075
