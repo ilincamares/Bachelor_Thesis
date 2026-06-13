@@ -1,0 +1,20 @@
+{
+    "validation_triplets_evaluated": 4863,
+    "margin": 0.5,
+    "mean_triplet_loss": 0.003549,
+    "mean_anchor_positive_distance": 0.259029,
+    "mean_anchor_negative_distance": 1.307203,
+    "mean_distance_gap_neg_minus_pos": 1.048175,
+    "std_anchor_positive_distance": 0.106111,
+    "std_anchor_negative_distance": 0.265099,
+    "min_anchor_positive_distance": 0.03769749030470848,
+    "max_anchor_positive_distance": 0.900015115737915,
+    "min_anchor_negative_distance": 0.2698817551136017,
+    "max_anchor_negative_distance": 1.9483760595321655,
+    "ordering_satisfaction_rate_percent": 100.0,
+    "margin_satisfaction_rate_percent": 96.79,
+    "validation_images": 1621,
+    "train_ratio": 0.8,
+    "repeats_per_image": 3,
+    "seed": 42
+}

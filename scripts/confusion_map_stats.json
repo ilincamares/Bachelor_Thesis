@@ -1,0 +1,93 @@
+{
+    "total_characters_in_confusion_map": 8105,
+    "similarity_summary": {
+        "top_1_scores": {
+            "count": 8105,
+            "mean": 83.6063,
+            "min": 63.06,
+            "max": 96.2,
+            "std": 4.4222
+        },
+        "top_3_scores": {
+            "count": 24315,
+            "mean": 81.5961,
+            "min": 59.65,
+            "max": 96.2,
+            "std": 4.5523
+        },
+        "top_5_scores": {
+            "count": 40525,
+            "mean": 80.3918,
+            "min": 58.29,
+            "max": 96.2,
+            "std": 4.6604
+        }
+    },
+    "valid_distractor_summary": {
+        "count": 8105,
+        "mean": 4.6044,
+        "min": 0.0,
+        "max": 5.0,
+        "std": 0.6523
+    },
+    "same_pinyin_neighbor_summary": {
+        "count": 8105,
+        "mean": 0.3089,
+        "min": 0.0,
+        "max": 5.0,
+        "std": 0.5985
+    },
+    "characters_with_at_least_3_valid_distractors": 8015,
+    "percentage_with_at_least_3_valid_distractors": 98.89,
+    "per_hsk_summary": {
+        "1": {
+            "characters": 174,
+            "average_valid_distractors": 4.7529,
+            "characters_with_at_least_3_valid_distractors": 173,
+            "percentage_with_at_least_3_valid_distractors": 99.43,
+            "average_same_pinyin_skipped": 0.1724
+        },
+        "2": {
+            "characters": 173,
+            "average_valid_distractors": 4.7168,
+            "characters_with_at_least_3_valid_distractors": 173,
+            "percentage_with_at_least_3_valid_distractors": 100.0,
+            "average_same_pinyin_skipped": 0.2139
+        },
+        "3": {
+            "characters": 270,
+            "average_valid_distractors": 4.7444,
+            "characters_with_at_least_3_valid_distractors": 269,
+            "percentage_with_at_least_3_valid_distractors": 99.63,
+            "average_same_pinyin_skipped": 0.2037
+        },
+        "4": {
+            "characters": 447,
+            "average_valid_distractors": 4.6667,
+            "characters_with_at_least_3_valid_distractors": 444,
+            "percentage_with_at_least_3_valid_distractors": 99.33,
+            "average_same_pinyin_skipped": 0.2796
+        },
+        "5": {
+            "characters": 621,
+            "average_valid_distractors": 4.6876,
+            "characters_with_at_least_3_valid_distractors": 618,
+            "percentage_with_at_least_3_valid_distractors": 99.52,
+            "average_same_pinyin_skipped": 0.2576
+        },
+        "6": {
+            "characters": 978,
+            "average_valid_distractors": 4.6278,
+            "characters_with_at_least_3_valid_distractors": 962,
+            "percentage_with_at_least_3_valid_distractors": 98.36,
+            "average_same_pinyin_skipped": 0.3016
+        },
+        "unknown": {
+            "characters": 5442,
+            "average_valid_distractors": 4.5704,
+            "characters_with_at_least_3_valid_distractors": 5376,
+            "percentage_with_at_least_3_valid_distractors": 98.79,
+            "average_same_pinyin_skipped": 0.3311
+        }
+    }
+}

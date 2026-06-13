@@ -1,0 +1,7 @@
+projection,k,trustworthiness,neighbour_preservation,neighbour_preservation_percent
+UMAP,5,0.952729,0.234991,23.5
+UMAP,10,0.949273,0.265157,26.52
+UMAP,15,0.946439,0.274917,27.49
+t-SNE,5,0.995252,0.511117,51.11
+t-SNE,10,0.989631,0.45409,45.41
+t-SNE,15,0.984296,0.422718,42.27
