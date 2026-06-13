@@ -26,10 +26,6 @@ def save_json(path: str, data):
 
 
 def parse_character_from_filename(path: Path) -> str | None:
-    """
-    Supports filenames such as:
-    U+4F60.png
-    """
     stem = path.stem
 
     if stem.startswith("U+"):
@@ -46,15 +42,6 @@ def parse_character_from_filename(path: Path) -> str | None:
 
 
 def load_images(image_folder: Path):
-    """
-    Loads all PNG images and returns:
-    {
-        "你": numpy_array,
-        "好": numpy_array,
-        ...
-    }
-    """
-
     if not image_folder.exists():
         raise FileNotFoundError(f"Image folder not found: {image_folder}")
 
@@ -84,13 +71,6 @@ def load_images(image_folder: Path):
 
 
 def parse_snn_neighbor(neighbor):
-    """
-    Supports confusion map entries such as:
-    ["好", 0.92]
-
-    or:
-    {"character": "好", "similarity": 0.92}
-    """
 
     if isinstance(neighbor, dict):
         character = neighbor.get("character")
@@ -123,11 +103,6 @@ def get_snn_top_k(confusion_map: dict, target: str, k: int):
 
 
 def calculate_ssim_score(image_a, image_b):
-    """
-    Computes SSIM between two grayscale images.
-    Higher value means more similar.
-    """
-
     return float(
         ssim(
             image_a,
@@ -169,16 +144,6 @@ def compute_ssim_neighbors_for_target(
 
 
 def load_hsk_filter(metadata_excel: Path | None, hsk_level: str | None):
-    """
-    Optional HSK filtering.
-
-    Expects columns:
-    Character
-    HSK
-
-    Returns None if no filtering is requested.
-    """
-
     if metadata_excel is None or hsk_level is None or hsk_level.lower() == "all":
         return None
 
@@ -354,11 +319,6 @@ def summarize_results(results_per_target, top_k_values):
 
 
 def make_examples(results_per_target, top_k=5, count=10):
-    """
-    Selects examples with different overlap values.
-    Useful for qualitative discussion.
-    """
-
     sorted_results = sorted(
         results_per_target,
         key=lambda result: result.get(f"overlap_ratio_at_{top_k}", 0),

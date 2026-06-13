@@ -17,29 +17,6 @@ def load_json(path: Path):
 
 
 def parse_embeddings(data):
-    """
-    Supports formats such as:
-
-    [
-        {"character": "你", "embedding": [0.1, 0.2, ...]},
-        ...
-    ]
-
-    or:
-
-    [
-        ["你", [0.1, 0.2, ...]],
-        ...
-    ]
-
-    or:
-
-    {
-        "你": [0.1, 0.2, ...],
-        ...
-    }
-    """
-
     result = {}
 
     if isinstance(data, dict):
