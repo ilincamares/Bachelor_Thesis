@@ -395,7 +395,7 @@ def main():
         top_k_values=args.top_k,
     )
 
-    with open("confusion_map_stats.json", "w+", encoding="utf-8") as file:
+    with open("stats/confusion_map_stats.json", "w+", encoding="utf-8") as file:
         json.dump(results, file, ensure_ascii=False, indent=4)
 
     print_main_summary(results)

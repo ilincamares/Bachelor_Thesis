@@ -475,7 +475,7 @@ def main():
         "per_target_results": results_per_target,
     }
 
-    save_json("snn_vs_ssim_comparison.json", output)
+    save_json("stats/snn_vs_ssim_comparison.json", output)
 
     print_summary(summary, args.top_k)
     print_latex_table(summary, args.top_k)

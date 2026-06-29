@@ -273,7 +273,7 @@ def main():
     results["repeats_per_image"] = args.repeats_per_image
     results["seed"] = args.seed
 
-    with open("triplet_stats.json", "w+", encoding="utf-8") as file:
+    with open("stats/triplet_stats.json", "w+", encoding="utf-8") as file:
         json.dump(results, file, ensure_ascii=False, indent=4)
 
     print_results(results)
