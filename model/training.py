@@ -74,7 +74,6 @@ def train_model(model, train_loader, val_loader, max_epochs=50, patience=5):
 
         if patience_counter >= patience:
             print(f"\nStopping Early! Validation loss hasn't improved for {patience} epochs.")
-            print(f"The model has officially learned as much as it can without memorizing.")
             break
 
     model.load_state_dict(best_model_wts)
