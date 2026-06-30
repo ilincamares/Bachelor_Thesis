@@ -8,7 +8,7 @@ from model.constants import MODEL_PATH
 from model.siamese_network import SiameseNetwork
 from model.transforms import base_transform, positive_transform
 
-TEST_DATA_FOLDER = "../data/hsk_dataset_images"
+TEST_DATA_FOLDER = "../data/dataset_skeletons"
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
